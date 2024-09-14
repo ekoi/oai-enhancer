@@ -1,1 +1,1 @@
-# oai-enhancer
+# oai-enricher-service

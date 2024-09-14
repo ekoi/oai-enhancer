@@ -1,0 +1,12 @@
+[default]
+service_name = "oai-enricher-service"
+#FastAPI
+fastapi_title = "OAI Enricher Service"
+fastapi_description = ""
+
+
+xslt_path = "@format {env[BASE_DIR]}/resources/xslt/combined.xsl"
+
+log_file = "@format {env[BASE_DIR]}/logs/oes.log"
+log_level = 10
+log_format = "%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s"

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "oai-enricher-service"
-version = "0.1.1"
+version = "0.1.4"
 description = ""
 authors = ["Eko Indarto <eko.indarto@dans.knaw.nl>"]
 readme = "README.md"
@@ -8,6 +8,13 @@ include = ["resources/*", "logs/*", "conf/*"]
 packages = [
     { include = "src" }
 ]
+
+[project.urls]
+Homepage = "http://oai-service.dans.knaw.nl"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/ekoi/oai-enricher-service"
+Issues = "https://github.com/ekoi/oai-enricher-service/issues"
+Changelog = "https://github.com/ekoi/oai-enricher-service/master/CHANGELOG.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -19,6 +26,13 @@ saxonche = "^12.5.0"
 emoji = "^2.12.1"
 requests = "^2.32.3"
 tomli = "^2.0.1"
+httpx = "^0.23.0"
+prometheus-client = "^0.20.0"
+opentelemetry-distro = "^0.48b0"
+opentelemetry-instrumentation-fastapi = "^0.48b0"
+opentelemetry-instrumentation-logging = "^0.48b0"
+opentelemetry-exporter-otlp = "^1.27.0"
+pytest = "^8.3.3"
 
 
 [build-system]

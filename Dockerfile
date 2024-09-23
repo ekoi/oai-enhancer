@@ -1,6 +1,6 @@
 FROM python:3.12.3-bookworm
 
-ARG VERSION=0.1.1
+ARG VERSION=0.1.4
 
 RUN useradd -ms /bin/bash dans
 

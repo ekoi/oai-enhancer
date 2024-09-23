@@ -1,0 +1,28 @@
+{
+    "default": {
+        "repos": [
+            {
+                "dvnl": {
+                    "url": "https://dataverse.nl",
+                    "xslt_default": "@format {env[BASE_DIR]}/resources/xslt/cessda-combined.xsl"
+                },
+                "ss": {
+                    "url": "https://ssh.datastations.nl",
+                    "xslt_default": "@format {env[BASE_DIR]}/resources/xslt/cessda-combined.xsl"
+                },
+                "ar": {
+                    "url": "https://archaeology.dans.knaw.nl",
+                    "xslt_default": "@format {env[BASE_DIR]}/resources/xslt/cessda-combined.xsl"
+                },
+                "ls": {
+                    "url": "https://lifesciences.datastations.nl",
+                    "xslt_default": "@format {env[BASE_DIR]}/resources/xslt/cessda-combined.xsl"
+                },
+                "pt": {
+                    "url": "https://phys-techsciences.datastations.nl",
+                    "xslt_default": "@format {env[BASE_DIR]}/resources/xslt/cessda-combined.xsl"
+                }
+            }
+        ]
+    }
+}

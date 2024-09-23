@@ -27,11 +27,6 @@ emoji = "^2.12.1"
 requests = "^2.32.3"
 tomli = "^2.0.1"
 httpx = "^0.23.0"
-prometheus-client = "^0.20.0"
-opentelemetry-distro = "^0.48b0"
-opentelemetry-instrumentation-fastapi = "^0.48b0"
-opentelemetry-instrumentation-logging = "^0.48b0"
-opentelemetry-exporter-otlp = "^1.27.0"
 pytest = "^8.3.3"
 
 

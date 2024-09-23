@@ -14,7 +14,7 @@ The OAI Enricher Service is a FastAPI-based application designed to enrich OAI-P
 ### Steps
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/oai-enricher-service.git
+    git clone https://github.com/ekoi/oai-enricher-service.git
     cd oai-enricher-service
     ```
 

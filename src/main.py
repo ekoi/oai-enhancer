@@ -82,16 +82,16 @@ async def get_service_name():
     """
     return {"service name": ' '.join(word.capitalize() for word in get_name().split('-'))}
 
-@app.get("/dans-repos")
-async def read_repos():
+@app.get("/repos")
+async def get_supported_repos():
     """
-    Endpoint to list all DANS repository keys.
+    Endpoint to list all repository keys.
 
-    This endpoint retrieves the keys from the `dans_repo` dictionary defined in the settings
+    This endpoint retrieves the keys from the `repos` dictionary defined in the settings
     and logs them. It then returns the list of keys.
 
     Returns:
-        list: A list of keys from the `dans_repo` dictionary.
+        list: A list of keys from the `repositories` dictionary.
     """
     # dans_repo = settings.dans_repo
     # # for key, value in dans_repo.items():
@@ -102,7 +102,7 @@ async def read_repos():
     return supported_repos
 
 @app.get("/{repo}/{schema}/oai")
-async def get_mapping(repo: str, schema: str, request: Request):
+async def get_oai_with_specific_schema(repo: str, schema: str, request: Request):
     """
     Endpoint to retrieve and process the OAI-PMH response for a specific repository and mapping.
 
@@ -110,7 +110,7 @@ async def get_mapping(repo: str, schema: str, request: Request):
     using the provided repository and mapping.
 
     Args:
-        dans_repo (str): The repository key (e.g., 'dvnl').
+        repo (str): The repository key (e.g., 'dvnl').
         mapping (str): The mapping key.
         request (Request): The FastAPI request object containing query parameters.
 
@@ -131,8 +131,8 @@ async def get_mapping(repo: str, schema: str, request: Request):
 
     return await mapper(repo, xslt_path, request)
 
-@app.get("/{dans_repo}/oai")
-async def redirect_oai(dans_repo: str, request: Request):
+@app.get("/{repo}/oai")
+async def get_oai(repo: str, request: Request):
     """
     Endpoint to redirect OAI-PMH requests for a specific repository.
 
@@ -140,17 +140,17 @@ async def redirect_oai(dans_repo: str, request: Request):
     and query parameters from the request.
 
     Args:
-        dans_repo (str): The repository key.
+        repo (str): The repository key.
         request (Request): The FastAPI request object containing query parameters.
 
     Returns:
         Response: The processed XML response or an HTTPException if the repository is not found.
     """
-    if dans_repo not in supported_repos:
+    if repo not in supported_repos:
         return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Repository not found")
 
-    base_url = get_repo(dans_repo).URL
-    xslt_default = get_repo(dans_repo).XSLT_DEFAULT
+    base_url = get_repo(repo).URL
+    xslt_default = get_repo(repo).XSLT_DEFAULT
     return await mapper(base_url, xslt_default, request)
 
 
@@ -162,7 +162,7 @@ async def mapper(base_url, xslt_path, request):
     fetches the corresponding dataset in JSON format, and applies an XSLT transformation to the response.
 
     Args:
-        dans_repo (str): The repository key.
+        repo (str): The repository key.
         xslt_path (str): The path to the XSLT file to be used for the transformation.
         request (Request): The FastAPI request object containing query parameters.
 
@@ -170,7 +170,7 @@ async def mapper(base_url, xslt_path, request):
         Response: The transformed XML response or an HTTPException if an error occurs.
     """
     # base_url_not_exists = "Not found"
-    # base_url = settings.get(dans_repo, base_url_not_exists)
+    # base_url = settings.get(repo, base_url_not_exists)
     # if base_url == base_url_not_exists:
     #     return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Repository not found")
     query_params = request.query_params

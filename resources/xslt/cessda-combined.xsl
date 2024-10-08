@@ -7,7 +7,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs math" version="3.0">
     <xsl:output indent="yes" omit-xml-declaration="no" encoding="UTF-8"/>
 <!--        <xsl:param name="json-uri" select="()"/>-->
-    <xsl:param name="json-uri" select="'file:/Users/akmi/git/ODISSEI-2024/oai-enricher-service/resources/etc/dv-dutch.json'"/>
+    <xsl:param name="json-uri" select="'file:/Users/akmi/git/ODISSEI-2024/oai-enricher-service/resources/etc/10.17026-SS-MAAVTA_dv_json.json'"/>
     <xsl:param name="json" select="unparsed-text($json-uri)"/>
     <xsl:param name="json-xml" select="json-to-xml($json)"/>
     
@@ -53,10 +53,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="ddi:codebook:2_5 https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd"
         >
-        <xsl:message>88<xsl:value-of select="$json-xml//map[@key='metadataBlocks']/map[@key='citation']/array[@key='fields']/map/string[@key='typeName' and text()='distributionDate']/following-sibling::string[@key='value']"/></xsl:message>
             <xsl:copy>
                 <xsl:apply-templates select="@*"/>
-                <xsl:attribute name="date"><xsl:value-of select="$json-xml//map[@key='metadataBlocks']/map[@key='citation']/array[@key='fields']/map/string[@key='typeName' and text()='distributionDate']/following-sibling::string[@key='value']"/></xsl:attribute>
+                <xsl:attribute name="date"><xsl:if test="string-length($json-xml//map[@key='metadataBlocks']/map[@key='citation']/array[@key='fields']/map/string[@key='typeName' and text()='distributionDate']/following-sibling::string[@key='value'])=0"><xsl:value-of select="$json-xml/map/string[@key='publicationDate']"/></xsl:if><xsl:value-of select="$json-xml//map[@key='metadataBlocks']/map[@key='citation']/array[@key='fields']/map/string[@key='typeName' and text()='distributionDate']/following-sibling::string[@key='value']"/></xsl:attribute>
                 <xsl:apply-templates select="node()"/>
             </xsl:copy>
     </xsl:template>
@@ -76,6 +75,23 @@
                 <xsl:apply-templates select="node()"/>
             </xsl:copy>
        
+    </xsl:template>
+    
+    <xsl:template match="//*[namespace-uri()='ddi:codebook:2_5' and local-name()='subject']" xmlns="ddi:codebook:2_5" xpath-default-namespace="http://www.w3.org/2005/xpath-functions"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="ddi:codebook:2_5 https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd"
+        >
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:for-each select="$json-xml//map[@key='metadataBlocks']/map[@key='dansSocialSciences']/array[@key='fields']/map/string[@key='typeName' and text()='dansElsstClassification']/following-sibling::array[@key='value']/string">
+                <xsl:variable name="eko"><xsl:value-of select="."/></xsl:variable>
+                <keyword xml:lang="en" vocab="ELSST"><xsl:attribute name="vocabURI"><xsl:value-of select="$eko"/></xsl:attribute>
+                    <xsl:value-of select="../following-sibling::array[@key='expandedvalue']/map/string[@key='@id' and text()=$eko]/following-sibling::array/map/string[@key='lang' and text()='en']/following-sibling::string[@key='value']"/>
+                </keyword>
+            </xsl:for-each>
+            <xsl:apply-templates select="node()"/>
+        </xsl:copy>
+        
     </xsl:template>
     
     <xsl:template match="//*[namespace-uri()='ddi:codebook:2_5' and local-name()='stdyInfo']/*[namespace-uri()='ddi:codebook:2_5' and local-name()='abstract']" xmlns="ddi:codebook:2_5" xpath-default-namespace="http://www.w3.org/2005/xpath-functions"
